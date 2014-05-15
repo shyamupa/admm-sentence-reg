@@ -5,4 +5,5 @@ function [mu] = updateMu(v,u,N,M,rho)
         rel_indices = M(:,i) ;    % the ith column
         mu(i)=(dot(v,rel_indices) + dot(u,rel_indices)/rho)/N(1,i); 
     end
+    disp(['New mu']);
 end

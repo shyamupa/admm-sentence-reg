@@ -31,9 +31,9 @@ vocab_size=size(M,2);
 
 X = zeros(length(docs),vocab_size);
 for d=1:length(docs)
-    if ( mod(d, 30) == 1 )
-        disp(['Creating X = '  num2str( 100  *  d / length(docs) ) ' % ' ])
-    end
+%     if ( mod(d, 30) == 1 )
+%         disp(['Creating X = '  num2str( 100  *  d / length(docs) ) ' % ' ])
+%     end
     doc_start=docs(d).sent_offsets(1,1);
     doc_end=docs(d).sent_offsets(end,end);
     X(d, :) = sum(M(doc_start:doc_end,:));
