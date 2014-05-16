@@ -1,4 +1,4 @@
-function [w,v]=admm(docs,y,M,X,lambda_sen,lambda_las,rho)
+function [w,v,history]=admm(docs,y,M,X,lambda_sen,lambda_las,rho)
 
 [corpus_size,vocab_size]=size(M);
 
@@ -11,23 +11,17 @@ N = sum(M(:,:));  % Ni is the sum of ith column of M, number of times ith word i
 N = N';
 
 w=zeros(vocab_size,1);
-
-% corpus_size
-% vocab_size
-% size(M)
-% size(w)
-% size(X)
-
 v=zeros(corpus_size,1);
 u=zeros(corpus_size,1);
 [m,n]=size(w);
 
-MAXITER = 30;
+MAXITER = 200;
 ABSTOL = 0.001;
 RELTOL = 0.001;
+
 %%%%%%%%%%%%%%%%%
 gOptions.maxIter = 50;
-gOptions.verbose = 1; % Set to 0 to turn off output
+gOptions.verbose = 0; % Set to 0 to turn off output
 options.corrections = 10; % Number of corrections to store for L-BFGS methods
 
 lambda = 1; 
@@ -41,6 +35,7 @@ history(MAXITER).r=[];
 history(MAXITER).s=[];
 history(MAXITER).eps_primal=[];
 history(MAXITER).eps_dual=[];
+
 while(iter <= MAXITER)
     tic;
     MyMu=updateMu(v,u,N,M,rho);
@@ -56,14 +51,22 @@ while(iter <= MAXITER)
     tic;
     oldV=v;
     for d=1:length(docs)
+        tic;
+        for i=1:length(docs(d).sent_offsets)
+            z(i) = M(docs(d).sent_offsets(i),:)*w - u(docs(d).sent_offsets(i))./rho; % z_(d,s)
+%             fprintf('%f is \n',norm(z));
+%             pause;
+        end
+        time=toc;
+        fprintf('time taken for z %f',time);
+        pause;
         parfor i=1:length(docs(d).sent_offsets)
-            z=M(docs(d).sent_offsets(i),:)*w - u(docs(d).sent_offsets(i))./rho; % z_(d,s)
-            v(docs(d).sent_offsets(i))=updateV(lambda_sen,rho,z); % v_(d,s)
+            v{i}=updateV(lambda_sen,rho,z(i)); % v_(d,s)
         end
     end
     time=toc;
     fprintf('Time taken for V Update %f \n',time);
-    break;
+    assert(~isequal(v,oldV));
     
     u = u + rho*(v-M*w);
     iter = iter + 1;
@@ -82,7 +85,6 @@ while(iter <= MAXITER)
         history(iter).eps_primal = eps_primal;
         history(iter).eps_dual = eps_dual;
     end
-
     fprintf('Obj is %f, r is %f e_p is %f, s is %f e_d is %f \n',calcObj(v,w,X,y,M,docs,rho),norm(r),eps_primal,norm(s),eps_dual);
 end
 
