@@ -52,17 +52,13 @@ while(iter <= MAXITER)
     oldV=v;
     for d=1:length(docs)
         tic;
-        for i=1:length(docs(d).sent_offsets)
-            z(i) = M(docs(d).sent_offsets(i),:)*w - u(docs(d).sent_offsets(i))./rho; % z_(d,s)
-%             fprintf('%f is \n',norm(z));
-%             pause;
-        end
+        Z = M*w - u./rho;
         time=toc;
-        fprintf('time taken for z %f',time);
+        fprintf('time taken for z %f \n',time);
         pause;
-        parfor i=1:length(docs(d).sent_offsets)
-            v{i}=updateV(lambda_sen,rho,z(i)); % v_(d,s)
-        end
+%         parfor i=1:length(docs(d).sent_offsets)
+%             v{i}=updateV(lambda_sen,rho,z(i)); % v_(d,s)
+%         end
     end
     time=toc;
     fprintf('Time taken for V Update %f \n',time);
