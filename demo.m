@@ -5,5 +5,5 @@ clear all; close all; clc;
 lambda_sen = 0.01; 
 lambda_las = 1; 
 rho = 1; 
-[w,v]=admm(docs,y,M,X,lambda_sen,lambda_las,rho); 
+[w,history]=admm(docs,y,M,X,lambda_sen,lambda_las,rho); 
 
