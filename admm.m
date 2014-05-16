@@ -3,9 +3,9 @@ function [w,history]=admm(docs,y,M,X,lambda_sen,lambda_las,rho)
 [corpus_size,vocab_size]=size(M);
 
 % bias
-% X = [X, ones(length(docs),1)]; 
-% vocab_size = vocab_size+1;
-% M = [M, ones(corpus_size,1)];
+X = [X, ones(length(docs),1)]; 
+vocab_size = vocab_size+1;
+M = [M, ones(corpus_size,1)];
 
 N = sum(M(:,:));  % Ni is the sum of ith column of M, number of times ith word in vocab appears in the corpus
 N = N';
@@ -24,19 +24,18 @@ gOptions.maxIter = 50;
 gOptions.verbose = 0; % Set to 0 to turn off output
 options.corrections = 10; % Number of corrections to store for L-BFGS methods
 
-lambda = 1; 
-lambdaVect = lambda*[0;ones(size(X, 2)-1,1)];
+lambdaVect = lambda_las*[0;ones(size(X, 2)-1,1)];
 %%%%%%%%%%%%%%%%%
 
 iter = 1;
 t =[];
 
-history(MAXITER).obj=[];
-history(MAXITER).r=[];
-history(MAXITER).s=[];
-history(MAXITER).rho=[];
-history(MAXITER).eps_primal=[];
-history(MAXITER).eps_dual=[];
+% history.obj(MAXITER)=[];
+% history.r(MAXITER)=[];
+% history.s(MAXITER)=[];
+% history.rho(MAXITER)=[];
+% history.eps_primal(MAXITER)=[];
+% history.eps_dual(MAXITER)=[];
 SCALETOL = 10;
 INC_FACTOR = 2;
 DEC_FACTOR = 2;
@@ -88,17 +87,17 @@ while(iter <= MAXITER)
     
     
     
-    history(iter).obj = calcObj(v,w,X,y,M,docs,rho);
-    history(iter).r = norm(r);
-    history(iter).s = norm(s);
-    history(iter).rho = rho;
-    history(iter).eps_primal = eps_primal;
-    history(iter).eps_dual = eps_dual;
+    history.obj(iter) = calcObj(v,w,X,y,M,docs,rho);
+    history.r(iter) = norm(r);
+    history.s(iter) = norm(s);
+    history.rho(iter) = rho;
+    history.eps_primal(iter) = eps_primal;
+    history.eps_dual(iter) = eps_dual;
 
-    fprintf('Obj is %f r is %f e_p is %f s is %f e_d is %f \n',history(iter).obj,history(iter).r,history(iter).eps_primal,history(iter).s,history(iter).eps_dual);
+    fprintf('Obj is %f r is %f e_p is %f s is %f e_d is %f \n',history.obj(iter),history.r(iter),history.eps_primal(iter),history.s(iter),history.eps_dual(iter));
     
     if norm(r) < eps_primal && norm(s) < eps_dual
-        fprintf('FINISHED');
+        fprintf('FINISHED\n');
         break
     elseif norm(r) > SCALETOL*norm(s)
         rho=INC_FACTOR*rho;
