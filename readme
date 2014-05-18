@@ -1,2 +1,6 @@
 An implementation of the optimiztion problem solved in Yogatami et al. (ACL 2014) using ADMM.
 The group lasso on sentence level has been parallelized for speed. 
+
+Part of group project with Daniel Khashabi and John Wieting.
+
+L1General code belongs to Mark Schmidt.
