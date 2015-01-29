@@ -1,5 +1,5 @@
 function [M,X,docs,L]=getData()
-
+% returns 0-1 labels in L
 M=load('data/Mhardware');
 corpus_size=size(M,1);
 
