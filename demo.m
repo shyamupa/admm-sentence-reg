@@ -9,6 +9,10 @@ X = [X, ones(size(X,1),1)]; % one more col to X
 y(y==0)=-1; % important!
 M = [M, ones(size(M,1),1)]; % one more col to M
 
+% wout=logreg_baseline(X,y);
+% predict(X,y,wout);
+% fprintf('sparsity %f\n',sparsity(wout));
+% return 
 lambda_sen = 0.001; 
 lambda_las = 0.1; 
 rho = 1; 
