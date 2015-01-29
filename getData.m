@@ -1,17 +1,19 @@
 function [M,X,docs,L]=getData()
 % returns 0-1 labels in L
+% feature matrix in X, with feat for each doc stacked row-wise
+% M is the document term matrix
+
 M=load('data/Mhardware');
 corpus_size=size(M,1);
 
 M=sparse((1:corpus_size)',M,ones(corpus_size,1));
 
 L=load('data/Lhardware');
-
 D=load('data/Dhardware');
+
+
 docLines = 1; 
 docIter = 1; 
-
-
 docs = struct('sent_offsets',[]);
     for i = 1:size(D,1)
 
@@ -38,7 +40,5 @@ for d=1:length(docs)
     doc_end=docs(d).sent_offsets(end,end);
     X(d, :) = sum(M(doc_start:doc_end,:));
 end
-
-
 end   
 
