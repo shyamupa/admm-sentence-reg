@@ -2,10 +2,6 @@ function [w,history]=admm(docs,y,M,X,lambda_sen,lambda_las,rho)
 
 [corpus_size,vocab_size]=size(M);
 
-% bias
-X = [X, ones(length(docs),1)]; 
-vocab_size = vocab_size+1;
-M = [M, ones(corpus_size,1)];
 
 N = sum(M(:,:));  % Ni is the sum of ith column of M, number of times ith word in vocab appears in the corpus
 N = N';
@@ -84,8 +80,6 @@ while(iter <= MAXITER)
     
     eps_primal = ABSTOL*sqrt(corpus_size) + RELTOL*max([norm(M*w),norm(v)]);
     eps_dual = ABSTOL*sqrt(corpus_size) + RELTOL*max([norm(M*w),norm(v)]);
-    
-    
     
     history.obj(iter) = calcObj(v,w,X,y,M,docs,rho);
     history.r(iter) = norm(r);
