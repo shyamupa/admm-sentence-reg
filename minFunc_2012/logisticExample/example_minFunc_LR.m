@@ -5,6 +5,7 @@ clear all
 % X = randn(nInst,nVars);
 % w = randn(nVars,1);
 % y = sign(X*w + randn(nInst,1));
+
 [M,X,docs,y]=getData();
 X = [X, ones(size(X,1),1)]; 
 y(y==0)=-1;
