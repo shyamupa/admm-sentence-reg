@@ -14,4 +14,4 @@ lambda_las = 0.1;
 rho = 1; 
 [w,history]=admm(docs,y,M,X,lambda_sen,lambda_las,rho); 
 predict(X,y,w);
-sparsity(w);
+fprintf('sparsity %f\n',sparsity(w));
