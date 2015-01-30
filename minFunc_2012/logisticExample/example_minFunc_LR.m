@@ -1,15 +1,15 @@
 clear all
 
-% nInst = 500;
-% nVars = 200;
-% X = randn(nInst,nVars);
-% w = randn(nVars,1);
-% y = sign(X*w + randn(nInst,1));
+nInst = 500;
+nVars = 200;
+X = randn(nInst,nVars);
+w = randn(nVars,1);
+y = sign(X*w + randn(nInst,1));
 
-[M,X,docs,y]=getData();
-X = [X, ones(size(X,1),1)]; 
-y(y==0)=-1;
-[nInst,nVars]= size(X);
+% [M,X,docs,y]=getData();
+% X = [X, ones(size(X,1),1)]; 
+% y(y==0)=-1;
+% [nInst,nVars]= size(X);
 
 w_init = zeros(nVars,1);
 funObj = @(w)LogisticLoss(w,X,y);
