@@ -1,4 +1,5 @@
 function [nll,g,H,T] = LogisticLoss(w,X,y)
+%% this is derived for y=+1/-1 labels. If you are using 0/1 labels, make sure you account for this accordingly.
 % w(feature,1)
 % X(instance,feature)
 % y(instance,1)
